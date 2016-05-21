@@ -38,3 +38,22 @@ struct GameGrid make_grid(int c, int l){
 
     return grid;
 }
+
+int grid_size_check(int c, int l){
+    if(c<=10 || c>=6){
+        if(l<=8 || l>=4){
+            if(c>l){
+                return 1;
+            }else{
+                printf("Tamanho da grelha de jogo invalido!\n");
+                return 0;
+            }
+        }else{
+            printf("Tamanho da grelha de jogo invalido!\n");
+            return 0;
+        }
+    }else{
+        printf("Tamanho da grelha de jogo invalido!\n");
+        return 0;
+    }
+}
