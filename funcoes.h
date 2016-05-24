@@ -1,42 +1,92 @@
 ///---Funcoes.h---
 
-int display(struct GameGrid grid){
-    int i, i2, ptop, gridcount=0;
+void display(Grid *gamegrid){
+    int i=0, i2, ptop, gridcount=0;
     char top[50] = "\\ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    Grid *temp;
 
-    for(ptop=0;ptop<grid.cols+1;ptop++){
+    temp = gamegrid;
+
+    while(temp->cont != "+"){
         printf("%c ",top[ptop]);
+        ptop++;
     }
-    for(i=0;i<grid.linhs;i++){
-        printf("\n%d",i+1);
-        for(i2=0;i2<grid.cols;i2++){
-            printf(" %c", grid.grid[gridcount]);
-            gridcount++;
+    printf("\n%d",i+1);
+    while(gamegrid->cont != NULL){
+        if(gamegrid->cont == "+"){
+            i++;
+            printf("\n%d",i+1);
+        }else{
+            printf(" %c", gamegrid->cont);
         }
-        gridcount++;
     }
 }
 
-struct GameGrid make_grid(int c, int l){
-    struct GameGrid grid;
+Grid * addGridIni(Grid *gamegrid, char cont){
+    Grid *novo, *aux;
+    aux = gamegrid;
+    novo = (Grid *) malloc( sizeof( Grid));
+    if(novo == NULL) exit(0);
+    novo->cont = cont;
+    novo->prox = aux->prox;
+    aux->prox = novo;
+    return(aux);
+}
+
+void addGridEnd(Grid **gamegrid, char cont){
+    Grid *novo;
+    novo = (Grid *) malloc( sizeof( Grid));
+    if(novo == NULL) exit(0);
+    novo->cont = cont;
+    novo->prox = NULL;
+
+    if(*gamegrid == NULL){
+        *gamegrid = novo;
+    }else{
+        Grid *aux;
+        aux = *gamegrid;
+        while(aux->prox != NULL){
+            aux = aux->prox;
+        }
+        aux->prox = novo;
+        *gamegrid = aux;
+    }
+}
+
+Grid * make_new(){
+    Grid *novo, *aux;
+    novo = (Grid *)malloc(sizeof(Grid));
+    if(novo == NULL) exit(0);
+    novo->prox = NULL;
+    aux = novo;
+    return(aux);
+}
+
+Grid * make_grid(int c, int l){
+    Grid *novo, *aux;
+    novo = (Grid *)malloc(sizeof(Grid));
     int linhas, colunas;
-    *grid.grid = NULL;
+
+    if(novo == NULL) exit(0);
 
     for(linhas=0;linhas<l;linhas++){
         for(colunas=0;colunas<c;colunas++){
             if(linhas==l-1 && colunas==c-1){
-                strcat(grid.grid,"X");
+                printf ("sizeof (aux) = %d\n", sizeof (novo));
+                printf("add x\n");
+                addGridEnd(novo,"X");
             }else{
-                strcat(grid.grid,"*");
+                printf ("sizeof (aux) = %d\n", sizeof (novo));
+                printf("add *\n");
+                addGridEnd(novo,"*");
             }
         }
-            strcat(grid.grid," ");
+            printf ("sizeof (aux) = %d\n", sizeof (novo));
+            printf("add +\n");
+            addGridEnd(novo,"+");
     }
-
-    grid.cols = c;
-    grid.linhs = l;
-
-    return grid;
+    aux = novo;
+    return(aux);
 }
 
 int grid_size_check(int c, int l){

@@ -10,7 +10,9 @@
 
 void main(void){
     int i,c=0,l=0;
-    struct GameGrid game_grid;
+    Grid GameGrid;
+    Grid *pGameGrid;
+    GameGrid = *make_new(); ///cria a grelha de jogo
 
     printf("Bem-Vindo!\n");
 
@@ -18,7 +20,7 @@ void main(void){
         printf("Indique os tamanhos para a grelha de jogo [COLUNAS   LINHAS] --> ");
         scanf("%d %d", &c, &l);
     }while(grid_size_check(c,l)==0);
-    game_grid = make_grid(c,l); ///cria a grelha de jogo
+    GameGrid = *make_grid(c,l); ///cria a grelha de jogo
 
-    display(game_grid); ///mostra grelha de jogo
+    display(&GameGrid); ///mostra grelha de jogo
 }

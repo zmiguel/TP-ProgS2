@@ -1,7 +1,6 @@
 ///---Estruturas.h---
 
-typedef struct GameGrid{
-    int linhs;
-    int cols;
-    char grid[500];
-};
+typedef struct Grid_st{
+    char cont;
+    struct Grid_st *prox;
+}Grid;
