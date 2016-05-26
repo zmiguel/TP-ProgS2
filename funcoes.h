@@ -1,31 +1,35 @@
 ///---Funcoes.h---
 
-void display(Grid *gamegrid){
-    int i=0, i2, ptop, gridcount=0;
+void display(Grid * gamegrid){
+    int i=0, i2, ptop=0, gridcount=0;
     char top[50] = "\\ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    Grid *temp;
+    Grid * temp = gamegrid;
+    Grid * temp2 = gamegrid;
 
-    temp = gamegrid;
-
-    while(temp->cont != "+"){
+    while(temp->cont != '+'){
         printf("%c ",top[ptop]);
         ptop++;
+        temp = temp->prox;
     }
     printf("\n%d",i+1);
-    while(gamegrid->cont != NULL){
-        if(gamegrid->cont == "+"){
+    if(temp2==NULL) printf("temp2 = null\n");
+    while(temp2->cont != NULL){
+        if(temp2->cont == '+'){
+            printf("temp2 = +\n");
             i++;
             printf("\n%d",i+1);
         }else{
-            printf(" %c", gamegrid->cont);
+            printf("temp2 != +\n");
+            printf(" %c", temp2->cont);
         }
     }
+    printf("\n");
 }
 
 Grid * addGridIni(Grid *gamegrid, char cont){
     Grid *novo, *aux;
     aux = gamegrid;
-    novo = (Grid *) malloc( sizeof( Grid));
+    novo = /*(Grid *) */malloc( sizeof( Grid));
     if(novo == NULL) exit(0);
     novo->cont = cont;
     novo->prox = aux->prox;
@@ -33,60 +37,36 @@ Grid * addGridIni(Grid *gamegrid, char cont){
     return(aux);
 }
 
-void addGridEnd(Grid **gamegrid, char cont){
-    Grid *novo;
-    novo = (Grid *) malloc( sizeof( Grid));
-    if(novo == NULL) exit(0);
-    novo->cont = cont;
-    novo->prox = NULL;
+Grid * addGridEnd(Grid *gamegrid, char cont){
+    Grid *aux = gamegrid;
 
-    if(*gamegrid == NULL){
-        *gamegrid = novo;
-    }else{
-        Grid *aux;
-        aux = *gamegrid;
-        while(aux->prox != NULL){
-            aux = aux->prox;
-        }
-        aux->prox = novo;
-        *gamegrid = aux;
+    while(aux->prox != NULL){
+        aux = aux->prox;
     }
+    aux->prox = malloc(sizeof(Grid));
+    aux->prox->cont = cont;
+    aux->prox->prox = NULL;
+
+    return gamegrid;
 }
 
-Grid * make_new(){
-    Grid *novo, *aux;
-    novo = (Grid *)malloc(sizeof(Grid));
-    if(novo == NULL) exit(0);
-    novo->prox = NULL;
-    aux = novo;
-    return(aux);
-}
 
-Grid * make_grid(int c, int l){
-    Grid *novo, *aux;
-    novo = (Grid *)malloc(sizeof(Grid));
+Grid * make_grid(Grid * gamegrid, int c, int l){
     int linhas, colunas;
 
-    if(novo == NULL) exit(0);
+    gamegrid->prox = NULL;
 
     for(linhas=0;linhas<l;linhas++){
         for(colunas=0;colunas<c;colunas++){
             if(linhas==l-1 && colunas==c-1){
-                printf ("sizeof (aux) = %d\n", sizeof (novo));
-                printf("add x\n");
-                addGridEnd(novo,"X");
+                gamegrid = addGridEnd(gamegrid,'X');
+                return gamegrid;
             }else{
-                printf ("sizeof (aux) = %d\n", sizeof (novo));
-                printf("add *\n");
-                addGridEnd(novo,"*");
+                gamegrid = addGridEnd(gamegrid,'*');
             }
         }
-            printf ("sizeof (aux) = %d\n", sizeof (novo));
-            printf("add +\n");
-            addGridEnd(novo,"+");
+            gamegrid = addGridEnd(gamegrid,'+');
     }
-    aux = novo;
-    return(aux);
 }
 
 int grid_size_check(int c, int l){
