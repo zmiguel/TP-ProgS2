@@ -20,8 +20,18 @@ void main(void){
         printf("Indique os tamanhos para a grelha de jogo [COLUNAS   LINHAS] --> ");
         scanf("%d %d", &c, &l);
     }while(grid_size_check(c,l)==0);
+    printf("\n");
     GameGrid = make_grid(GameGrid,c,l); ///cria a grelha de jogo
-    printf("make_grid SUCCESS!!!\n");\
     display(GameGrid); ///mostra grelha de jogo
-    printf("fim display\n");
+
+    int jog=0, jogada=0, linha;
+    char coluna;
+
+    do{///ciclo de jogo principal aqui:
+        jog=jogada%2 +1;
+        printf("\n[Jogador %d]:[LIN COL]:[3 B] -> ", jog);
+        scanf("%d %c", &linha, &coluna);
+
+    jogada++;
+    }while(win_cond(GameGrid, jog)!=1);
 }
