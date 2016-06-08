@@ -110,6 +110,80 @@ int out_lin_col(Grid * gamegrid, int val){///val = 0 -> linhas // val = 1 -> col
     return output;
 }
 
-int win_cond(Grid * gamegrid, int jog){
-    return 0;
+Grid * jogar(Grid * gamegrid, int col, int lin){
+    Grid * val_temp = gamegrid;
+    Grid * temp = gamegrid;
+
+    if(valida_jogada(val_temp,col,lin)==1){
+        printf("\n");
+        while(temp->prox != NULL){
+            temp = temp->prox;
+            if(temp->lin<=lin && temp->col <=col){
+                temp->cont = ' ';
+            }
+        }
+    }else{
+        printf("FIM DO JOGO!\n");
+    }
+    return gamegrid;
+}
+
+int valida_jogada(Grid * gamegrid, int col, int lin){
+    Grid * temp = gamegrid;
+
+    if(col<=out_lin_col(temp, 1) || lin<=out_lin_col(temp, 0)){
+        while(temp->prox != NULL){
+            temp=temp->prox;
+            if(temp->col==col && temp->lin==lin){
+                if(temp->cont == '*'){
+                    return 1;
+                }else if(temp->cont == 'X'){
+                    win =1;
+                    return 1;
+                }else{
+                    return 0;
+                }
+            }
+        }
+    }else{
+        printf("Jogada fora da grelha de jogo!\n");
+        return 2;
+    }
+}
+
+int convert_to_number(char ch){
+    int num=0;
+    if (ch >= 'A' && ch <= 'Z'){
+        num = ch - 'A';
+    }else if (ch >= 'a' && ch <= 'z'){
+        num = ch - 'a';
+    }
+    num=num+1;
+    return num;
+}
+
+char out_cont(Grid * gamegrid, int col, int lin){
+    Grid * temp = gamegrid;
+
+    while(temp->prox != NULL){
+        temp = temp->prox;
+        if(temp->lin==lin && temp->col==col){
+            return temp->cont;
+        }
+    }
+}
+
+GameSave * save_jog(GameSave * save,int id, int col, int lin){
+    GameSave * temp = save;
+
+    while(temp->prox != NULL){
+        temp = temp->prox;
+    }
+    temp->prox = malloc(sizeof(GameSave));
+    temp->prox->id = id;
+    temp->prox->lin = lin;
+    temp->prox->col = col;
+    temp->prox->prox = NULL;
+
+    return save;
 }
